@@ -11,22 +11,22 @@ export class UsersController {
   }
 
   @Get('all')
-  getAllUsers() {
-    return this.usersService.getAllUsers();
+  async getAllUsers() {
+    return await this.usersService.getAllUsers();
   }
 
   @Get(':id')
-  getUser(@Param('id') id: number) {
-    return this.usersService.getUser(id);
+  async getUser(@Param('id') id: number) {
+    return await this.usersService.getUser(id);
   }
 
   @Post()
-  createUser(@Body('name') name: string) {
-    return this.usersService.createUser(name);
+  async createUser(@Body() body: { name: string; password: string }) {
+    return await this.usersService.createUser(body.name, body.password);
   }
 
   @Delete()
-  deleteUser(@Body('id') id: number) {
-    return this.usersService.deleteUser(id);
+  async deleteUser(@Body('id') id: number) {
+    return await this.usersService.deleteUser(id);
   }
 }

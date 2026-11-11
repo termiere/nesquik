@@ -1,27 +1,27 @@
-import { Injectable } from '@nestjs/common';
-import { UsersRepository } from './users.repository.js';
+  import { Injectable } from '@nestjs/common';
+  import { UsersRepository } from './users.repository.js';
 
-@Injectable()
-export class UsersService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  @Injectable()
+  export class UsersService {
+    constructor(private readonly usersRepository: UsersRepository) {}
 
-  sayHello(): string {
-    return this.usersRepository.sayUserHello();
+    sayHello(): string {
+      return this.usersRepository.sayUserHello();
+    }
+
+    async getAllUsers() {
+      return await this.usersRepository.getAllUsers();
+    }
+
+    async getUser(id: number) {
+      return await this.usersRepository.getUser(id);
+    }
+
+    async createUser(name: string, password: string) {
+      return await this.usersRepository.createUser(name, password);
+    }
+
+    async deleteUser(id: number) {
+      return await this.usersRepository.deleteUser(id);
+    }
   }
-
-  getAllUsers() {
-    return this.usersRepository.getAllUsers();
-  }
-
-  getUser(id: number) {
-    return this.usersRepository.getUser(id);
-  }
-
-  createUser(name: string) {
-    return this.usersRepository.createUser(name);
-  }
-
-  deleteUser(id: number) {
-    return this.usersRepository.deleteUser(id);
-  }
-}

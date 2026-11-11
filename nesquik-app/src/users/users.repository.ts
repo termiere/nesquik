@@ -1,30 +1,69 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { Pool } from 'pg';
 
 @Injectable()
 export class UsersRepository {
-  private users = new Map<number, string>();
+  constructor(@Inject('PG_POOL') private readonly pool: Pool) {}
 
   sayUserHello(): string {
     return 'Hello every!';
   }
 
-  getAllUsers() {
-    return [...this.users];
+  async getAllUsers() {
+    try {
+      const res = await this.pool.query('select * from users');
+      return res.rows;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  getUser(id: number) {
-    return this.users.get(Number(id));
+  async getUser(id: number) {
+    try {
+      const res = await this.pool.query('select * from users where id = $1', [
+        id,
+      ]);
+      return res.rows[0];
+    } catch (error) {
+      throw error;
+    }
   }
 
-  createUser(name: string) {
-    let id = this.users.size + 1;
-    this.users.set(id, name);
+  async createUser(name: string, password: string) {
+    try {
+      const userAlreadyCreated = await this.pool.query(
+        'select * from users where username = $1',
+        [name],
+      );
 
-    return { id, name };
+      if (userAlreadyCreated.rows.length > 0) {
+        return 'user to uzhe est  ';
+      }
+
+      const res = await this.pool.query(
+        'INSERT INTO users (username, password) VALUES ($1, $2)',
+        [name, password],
+      );
+
+      return res.rows[0];
+    } catch (error) {
+      throw error;
+    }
   }
 
-  deleteUser(id: number) {
-    this.users.delete(id);
-    return 'vse nema usera';
+  async deleteUser(id: number) {
+    try {
+      const res = await this.pool.query('SELECT * FROM USERS WHERE id = $1', [
+        id,
+      ]);
+      if (res.rows.length === 0) {
+        return 'usera no nema';
+      }
+
+      await this.pool.query('DELETE FROM users WHERE id = $1', [id]);
+      return 'vse nema usera';
+    } catch (error) {
+      throw error;
+    }
   }
 }
