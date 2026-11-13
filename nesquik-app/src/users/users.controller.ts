@@ -1,32 +1,59 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+} from '@nestjs/common';
 import { UsersService } from './users.service.js';
 
-@Controller('users')
+@Controller('api/v1/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getUserHello(): string {
-    return this.usersService.sayHello();
-  }
-
-  @Get('all')
   async getAllUsers() {
     return await this.usersService.getAllUsers();
   }
 
-  @Get(':id')
-  async getUser(@Param('id') id: number) {
-    return await this.usersService.getUser(id);
+  @Get('/profile/:id')
+  async getUser(
+    @Param('id') id: number,
+    @Body() body: { access_token: string },
+  ) {
+    if (!body || !body.access_token) {
+      throw new BadRequestException('body / access_token de tvoi?');
+    }
+    return await this.usersService.getUser(id, body.access_token);
   }
 
-  @Post()
-  async createUser(@Body() body: { name: string; password: string }) {
-    return await this.usersService.createUser(body.name, body.password);
+  @Patch('/profile/:id')
+  async updateUser(
+    @Param('id') id: number,
+    @Body() body: { access_token: string; login: string; password: string },
+  ) {
+    if (!body || !body.access_token || !body.login || !body.password) {
+      throw new BadRequestException(
+        'body / access_token / login / password de tvoi?',
+      );
+    }
+    return await this.usersService.updateUser(
+      id,
+      body.login,
+      body.password,
+      body.access_token,
+    );
   }
 
-  @Delete()
-  async deleteUser(@Body('id') id: number) {
-    return await this.usersService.deleteUser(id);
+  @Delete('/profile/')
+  async deleteUser(@Body('id') body: { access_token: string; id: number }) {
+    if (!body || !body.access_token) {
+      throw new BadRequestException(
+        'body / access_token / login / password de tvoi?',
+      );
+    }
+    return await this.usersService.deleteUser(body.id, body.access_token);
   }
 }

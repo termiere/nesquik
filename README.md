@@ -1,5 +1,98 @@
 # nesquik-app ( nestjs app )
 
+### 3. ORM
+
+zadachi \
+1 orm done - POLUCHILI CIKCLICHESKOE - PLOHO - V NEXT ISPRAVIM \
+2 token access \
+3 migrations not DONE \
+4 add data(users)
+
+---
+
+AUTH
+
+```
+curl.exe -X POST "http://localhost:3000/api/v1/auth/register" `
+ -H "Content-Type: application/json" `
+ -d '{\"login\": \"hto\", \"password\": \"axe atacks\"}'
+```
+
+```
+curl.exe -X POST "http://localhost:3000/api/v1/auth/login" `
+ -H "Content-Type: application/json" `
+ -d '{\"login\": \"hto\", \"password\": \"axe atacks\"}'
+```
+
+```
+{"id":14,"access_token":"318","user":{"id":7,"login":"hto","password":"axe atacks"}}
+```
+
+DATA
+
+```
+curl.exe -X GET "http://localhost:3000/api/v1/users"
+```
+
+```
+curl.exe -X GET "http://localhost:3000/api/v1/users/profile/7" `
+ -H "Content-Type: application/json" `
+ -d '{\"access_token\":\"318\"}'
+```
+
+```
+curl.exe -X PATCH "http://localhost:3000/api/v1/users/profile/7"
+ -H "Content-Type: application/json" `
+ -d '{\"login\": \"hto\", \"password\": \"axe atacks\", \"access_token\":\"318\"}'
+```
+
+```
+curl.exe -X DELETE "http://localhost:3000/api/v1/users/profile/3"
+ -H "Content-Type: application/json" `
+ -d '{\"login\": \"hto\", \"password\": \"axe atacks\", \"access_token\":\"318\"}'
+```
+
+---
+
+create user
+
+```
+curl.exe -X POST "http://localhost:3000/api/v1/auth" `
+ -H "Content-Type: application/json" `
+ -d '{\"username\": \"hmud hto\", \"password\": \"axe atacks\"}'
+```
+
+```
+curl.exe -X GET "http://localhost:3000/api/v1/auth/profile/3"
+```
+
+```
+curl.exe -X GET "http://localhost:3000/api/v1/auth/users/"
+```
+
+patch useraj
+
+```
+curl.exe -X PATCH "http://localhost:3000/api/v1/auth/profile/2" `
+ -H "Content-Type: application/json" `
+ -d '{\"id\": 2, \"username\": \"hmud hto\", \"password\": \"axe atacks\"}'
+```
+
+udalit nah
+
+```
+curl.exe -X DELETE "http://localhost:3000/api/v1/auth/profile/" `
+ -H "Content-Type: application/json" `
+ -d '{\"id\": 1}'
+```
+
+entities
+dto
+users.module
+миграции data-souce.ts
+![alt text](image-1.png)
+![alt text](image-2.png)
+
 ---
 
 ### 2. AOP - middleware
@@ -14,7 +107,7 @@ curl.exe -X POST "http://localhost:3000/users" `
  -d '{\"name\": \"mahmud hto\", \"password\": \"axe atacks\"}'
 ```
 
-http://localhost:3000/users/1 - check usera
+http://localhost:3000/users/1 - check usera \
 http://localhost:3000/users/all - vsex
 
 udalit nah

@@ -1,33 +1,28 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
-import { UsersService } from './users/users.service.js';
-import { UsersController } from './users/users.controller.js';
-import { UsersRepository } from './users/users.repository.js';
 import { LoggerMiddleware } from './logger/logger.middleware.js';
-import { Pool } from 'pg';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module.js';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
-  imports: [],
-  controllers: [AppController, UsersController],
-  providers: [
-    AppService,
-    UsersService,
-    UsersRepository,
-    {
-      provide: 'PG_POOL',
-      useFactory: () => {
-        return new Pool({
-          host: 'localhost',
-          port: 5432,
-          user: 'postgres',
-          password: 'postgres',
-          database: 'nesquik',
-        });
-      },
-    },
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5434,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'nesquik',
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
+    UsersModule,
+    AuthModule,
   ],
-  exports: ['PG_POOL'],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
