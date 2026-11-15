@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity.js';
 
 @Injectable()
-export class UsersRepository {
+export class UsersDataRepository {
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
@@ -30,6 +30,6 @@ export class UsersRepository {
   }
 
   async deleteUser(id: number) {
-    return await this.usersRepository.delete({ id });
+    return this.usersRepository.delete({ id: id });
   }
 }

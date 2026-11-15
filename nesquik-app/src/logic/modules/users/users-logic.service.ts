@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from './users.repository.js';
-import { AuthRepository } from '../auth/auth.repository.js';
+import { UsersDataRepository } from '../../../data/modules/users/users-data.repository.js';
+import { AuthDataRepository } from '../../../data/modules/auth/auth-data.repository.js';
 
 @Injectable()
-export class UsersService {
+export class UsersLogicService {
   constructor(
-    private readonly usersRepository: UsersRepository,
-    private readonly authRepository: AuthRepository,
+    private readonly usersRepository: UsersDataRepository,
+    private readonly authRepository: AuthDataRepository,
   ) {}
 
   sayHello(): string {

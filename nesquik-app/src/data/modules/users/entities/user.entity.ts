@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import type { Relation } from 'typeorm';
 import { Auth } from '../../auth/entities/auth.entity.js';
 
@@ -13,6 +13,6 @@ export class User {
   @Column()
   password: string;
 
-  @OneToOne(() => Auth, (auth) => auth.user)
-  auth: Relation<Auth>;
+  @OneToMany(() => Auth, (auth) => auth.user)
+  auth: Relation<Auth[]>;
 }

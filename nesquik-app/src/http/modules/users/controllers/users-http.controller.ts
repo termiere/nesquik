@@ -7,11 +7,11 @@ import {
   Param,
   Patch,
 } from '@nestjs/common';
-import { UsersService } from './users.service.js';
+import { UsersLogicService } from '../../../../logic/modules/users/users-logic.service.js';
 
 @Controller('api/v1/users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class UsersHttpController {
+  constructor(private readonly usersService: UsersLogicService) {}
 
   @Get()
   async getAllUsers() {
@@ -47,13 +47,19 @@ export class UsersController {
     );
   }
 
-  @Delete('/profile/')
-  async deleteUser(@Body('id') body: { access_token: string; id: number }) {
+  @Delete('/profile/:id')
+  async deleteUser(
+    @Param('id') id: number,
+    @Body() body: { access_token: string },
+  ) {
+    console.log('sha proverim');
+
     if (!body || !body.access_token) {
       throw new BadRequestException(
         'body / access_token / login / password de tvoi?',
       );
     }
-    return await this.usersService.deleteUser(body.id, body.access_token);
+    console.log('sha proverim');
+    return await this.usersService.deleteUser(id, body.access_token);
   }
 }

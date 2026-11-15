@@ -5,7 +5,7 @@ import { User } from '../users/entities/user.entity.js';
 import { Auth } from './entities/auth.entity.js';
 
 @Injectable()
-export class AuthRepository {
+export class AuthDataRepository {
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     @InjectRepository(Auth) private readonly authRepository: Repository<Auth>,

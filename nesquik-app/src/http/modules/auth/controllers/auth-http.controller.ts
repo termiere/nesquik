@@ -1,11 +1,12 @@
 import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
-import { AuthService } from './auth.service.js';
-import { RegisterAuthDTO } from './dto/register-auth.dto.js';
-import { LoginAuthDTO } from './dto/login-auth.dto.js';
+
+import { RegisterAuthDTO } from '../dto/register-auth.dto.js';
+import { LoginAuthDTO } from '../dto/login-auth.dto.js';
+import { AuthLogicService } from '../../../../logic/modules/auth/auth-logic.service.js';
 
 @Controller('api/v1/auth')
-export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+export class AuthHttpController {
+  constructor(private readonly authService: AuthLogicService) {}
 
   @Post('/register')
   async register(@Body() body: RegisterAuthDTO) {

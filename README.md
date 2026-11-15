@@ -1,5 +1,53 @@
 # nesquik-app ( nestjs app )
 
+### 4 app layers
+
+> **token nuzhno zapomnit**
+
+sozdal usera
+
+```
+curl.exe -X POST "http://localhost:3000/api/v1/auth/register" ` -H "Content-Type: application/json" ` -d '{\"login\": \"13hto\", \"password\": \"axe atacks\"}'
+
+{"id":9,"login":"13hto","password":"axe atacks"}
+```
+
+login usera
+
+```
+curl.exe -X POST "http://localhost:3000/api/v1/auth/login" ` -H "Content-Type: application/json" ` -d '{\"login\": \"13hto\", \"password\": \"axe atacks\"}'
+
+{"id":15,"access_token":"140","user":{"id":9,"login":"13hto","password":"axe atacks"}}
+```
+
+check profile
+
+```
+curl.exe -X GET "http://localhost:3000/api/v1/users/profile/9" `
+ -H "Content-Type: application/json" `
+ -d '{\"access_token\":\"140\"}'
+
+{"id":9,"login":"13hto","password":"axe atacks"}
+```
+
+patch usera login
+
+```
+curl.exe -X PATCH "http://localhost:3000/api/v1/users/profile/9" -H "Content-Type: application/json" ` -d '{\"login\": \"9hto\", \"password\": \"axe atacks\", \"access_token\":\"140\"}'
+
+{"id":9,"login":"9hto","password":"axe atacks"}
+```
+
+udalyaem usera
+
+```
+curl.exe -X DELETE "http://localhost:3000/api/v1/users/profile/9"
+-H "Content-Type: application/json" `
+-d '{\"access_token\":\"140\"}'
+```
+
+---
+
 ### 3. ORM
 
 zadachi \
@@ -12,44 +60,55 @@ zadachi \
 
 AUTH
 
-```
-curl.exe -X POST "http://localhost:3000/api/v1/auth/register" `
- -H "Content-Type: application/json" `
- -d '{\"login\": \"hto\", \"password\": \"axe atacks\"}'
+````
+
+curl.exe -X POST "http://localhost:3000/api/v1/auth/register" ` -H "Content-Type: application/json"`
+-d '{\"login\": \"hto\", \"password\": \"axe atacks\"}'
+
 ```
 
 ```
-curl.exe -X POST "http://localhost:3000/api/v1/auth/login" `
- -H "Content-Type: application/json" `
- -d '{\"login\": \"hto\", \"password\": \"axe atacks\"}'
+
+curl.exe -X POST "http://localhost:3000/api/v1/auth/login" ` -H "Content-Type: application/json"`
+-d '{\"login\": \"hto\", \"password\": \"axe atacks\"}'
+
 ```
 
 ```
+
 {"id":14,"access_token":"318","user":{"id":7,"login":"hto","password":"axe atacks"}}
+
 ```
 
 DATA
 
 ```
+
 curl.exe -X GET "http://localhost:3000/api/v1/users"
+
 ```
 
 ```
-curl.exe -X GET "http://localhost:3000/api/v1/users/profile/7" `
- -H "Content-Type: application/json" `
- -d '{\"access_token\":\"318\"}'
+
+curl.exe -X GET "http://localhost:3000/api/v1/users/profile/7" ` -H "Content-Type: application/json"`
+-d '{\"access_token\":\"318\"}'
+
 ```
 
 ```
+
 curl.exe -X PATCH "http://localhost:3000/api/v1/users/profile/7"
- -H "Content-Type: application/json" `
- -d '{\"login\": \"hto\", \"password\": \"axe atacks\", \"access_token\":\"318\"}'
+-H "Content-Type: application/json" `
+-d '{\"login\": \"hto\", \"password\": \"axe atacks\", \"access_token\":\"318\"}'
+
 ```
 
 ```
+
 curl.exe -X DELETE "http://localhost:3000/api/v1/users/profile/3"
- -H "Content-Type: application/json" `
- -d '{\"login\": \"hto\", \"password\": \"axe atacks\", \"access_token\":\"318\"}'
+-H "Content-Type: application/json" `
+-d '{\"login\": \"hto\", \"password\": \"axe atacks\", \"access_token\":\"318\"}'
+
 ```
 
 ---
@@ -57,41 +116,46 @@ curl.exe -X DELETE "http://localhost:3000/api/v1/users/profile/3"
 create user
 
 ```
-curl.exe -X POST "http://localhost:3000/api/v1/auth" `
- -H "Content-Type: application/json" `
- -d '{\"username\": \"hmud hto\", \"password\": \"axe atacks\"}'
+
+curl.exe -X POST "http://localhost:3000/api/v1/auth" ` -H "Content-Type: application/json"`
+-d '{\"username\": \"hmud hto\", \"password\": \"axe atacks\"}'
+
 ```
 
 ```
+
 curl.exe -X GET "http://localhost:3000/api/v1/auth/profile/3"
+
 ```
 
 ```
+
 curl.exe -X GET "http://localhost:3000/api/v1/auth/users/"
+
 ```
 
 patch useraj
 
 ```
-curl.exe -X PATCH "http://localhost:3000/api/v1/auth/profile/2" `
- -H "Content-Type: application/json" `
- -d '{\"id\": 2, \"username\": \"hmud hto\", \"password\": \"axe atacks\"}'
+
+curl.exe -X PATCH "http://localhost:3000/api/v1/auth/profile/2" ` -H "Content-Type: application/json"`
+-d '{\"id\": 2, \"username\": \"hmud hto\", \"password\": \"axe atacks\"}'
+
 ```
 
 udalit nah
 
 ```
-curl.exe -X DELETE "http://localhost:3000/api/v1/auth/profile/" `
- -H "Content-Type: application/json" `
- -d '{\"id\": 1}'
+
+curl.exe -X DELETE "http://localhost:3000/api/v1/auth/profile/" ` -H "Content-Type: application/json"`
+-d '{\"id\": 1}'
+
 ```
 
 entities
 dto
 users.module
 миграции data-souce.ts
-![alt text](image-1.png)
-![alt text](image-2.png)
 
 ---
 
@@ -102,9 +166,10 @@ hmw
 create user
 
 ```
-curl.exe -X POST "http://localhost:3000/users" `
- -H "Content-Type: application/json" `
- -d '{\"name\": \"mahmud hto\", \"password\": \"axe atacks\"}'
+
+curl.exe -X POST "http://localhost:3000/users" ` -H "Content-Type: application/json"`
+-d '{\"name\": \"mahmud hto\", \"password\": \"axe atacks\"}'
+
 ```
 
 http://localhost:3000/users/1 - check usera \
@@ -113,9 +178,10 @@ http://localhost:3000/users/all - vsex
 udalit nah
 
 ```
-curl.exe -X DELETE "http://localhost:3000/users" `
- -H "Content-Type: application/json" `
- -d '{\"id\": 1}'
+
+curl.exe -X DELETE "http://localhost:3000/users" ` -H "Content-Type: application/json"`
+-d '{\"id\": 1}'
+
 ```
 
 ---
@@ -123,6 +189,7 @@ curl.exe -X DELETE "http://localhost:3000/users" `
 lecture
 
 ```
+
 nest g mi logger
 
 ! надо подключить к модулю
@@ -137,16 +204,17 @@ any: bad practice - хуярим по рукам
 type data = {id: Number; name: String}
 let body: unknown;
 class BodyValidator {
-    validate(x: any): x is data{ - ЕДИНСТВЕННОЕ НАХУЙ МЕСТО ГДЕ АНУ ДОЗВОЛИТЕЛЬНО!
-    if (x.id != undefined && x.name != undefined) {
-        return true
-    } else {
-        return false;
-    }
+validate(x: any): x is data{ - ЕДИНСТВЕННОЕ НАХУЙ МЕСТО ГДЕ АНУ ДОЗВОЛИТЕЛЬНО!
+if (x.id != undefined && x.name != undefined) {
+return true
+} else {
+return false;
+}
 }}
 let isData = {id : 1, name : "bebebe"};
 new BodyValidator().validate(idData);
 ![alt text](image.png)
+
 ```
 
 ---
@@ -156,29 +224,39 @@ new BodyValidator().validate(idData);
 create user
 
 ```
+
 curl.exe -X POST "http://localhost:3000/users"
- -H "Content-Type: application/json"
- -d '{\"name\": \"mahmud hto\"}'
+-H "Content-Type: application/json"
+-d '{\"name\": \"mahmud hto\"}'
+
 ```
 
 get user/:id
 
 ```
+
 http://localhost:3000/users/1
+
 ```
 
 del usera - i ne bude usera
 
 ```
+
 curl.exe -X DELETE "http://localhost:3000/users"
- -H "Content-Type: application/json"
- -d '{\"id\": 1}'
+-H "Content-Type: application/json"
+-d '{\"id\": 1}'
+
 ```
 
 get vsex
 
 ```
+
 http://localhost:3000/users/all
+
 ```
 
 vse.
+```
+````

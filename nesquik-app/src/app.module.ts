@@ -1,10 +1,8 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { LoggerMiddleware } from './logger/logger.middleware.js';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module.js';
-import { AuthModule } from './auth/auth.module.js';
+import { HttpModule } from './http/http.module.js';
+import { LogicModule } from './logic/logic.module.js';
+import { DataModule } from './data/data.module.js';
 
 @Module({
   imports: [
@@ -18,14 +16,9 @@ import { AuthModule } from './auth/auth.module.js';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    UsersModule,
-    AuthModule,
+    HttpModule,
+    LogicModule,
+    DataModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}

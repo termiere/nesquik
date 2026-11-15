@@ -17,7 +17,7 @@ export class Auth {
   @Column()
   access_token: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: Relation<User>;
 }

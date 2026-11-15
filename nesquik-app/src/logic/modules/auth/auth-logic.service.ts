@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { AuthRepository } from './auth.repository.js';
-import { UsersRepository } from '../users/users.repository.js';
+import { AuthDataRepository } from '../../../data/modules/auth/auth-data.repository.js';
+import { UsersDataRepository } from '../../../data/modules/users/users-data.repository.js';
 
 @Injectable()
-export class AuthService {
+export class AuthLogicService {
   constructor(
-    private readonly authRepository: AuthRepository,
-    private readonly usersRepository: UsersRepository,
+    private readonly authRepository: AuthDataRepository,
+    private readonly usersRepository: UsersDataRepository,
   ) {}
 
   async register(login: string, password: string) {
