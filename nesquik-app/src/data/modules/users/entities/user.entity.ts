@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import type { Relation } from 'typeorm';
-import { Auth } from '../../auth/entities/auth.entity.js';
+import { Auth } from '../../auth/entities/auth.entity';
 
 @Entity('users')
 export class User {

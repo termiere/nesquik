@@ -1,12 +1,12 @@
 services:
   postgres:
     image: postgres:18
-    container_name: postgres
+    container_name: nesquik-db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: nesquik
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     ports:
       - '5434:5432'
     volumes:

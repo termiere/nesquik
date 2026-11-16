@@ -1,49 +1,87 @@
 # nesquik-app ( nestjs app )
 
+### 5 Migrations
+
+> **из 4 берем запросы, а тут у нас запуск**
+
+#### запуск
+
+`cd nesquik-app` \
+берем енв \
+`npm ci` - скачиваем зависимоости \
+`docker compose up -d postgres` - \
+`npm run migration:run` - применяем миграции \
+`npm run start:dev` - запускаем \
+
+если уже все настроенно
+
+```
+cd nesquik-app
+docker compose up -d postgres
+npm run start:dev
+```
+
+---
+
 ### 4 app layers
 
 > **token nuzhno zapomnit**
 
+````
+
+http://localhost:3000/api/v1/users/
+
+```
+
 sozdal usera
 
 ```
-curl.exe -X POST "http://localhost:3000/api/v1/auth/register" ` -H "Content-Type: application/json" ` -d '{\"login\": \"13hto\", \"password\": \"axe atacks\"}'
+
+curl.exe -X POST "http://localhost:3000/api/v1/auth/register" `-H "Content-Type: application/json"` -d '{\"login\": \"13hto\", \"password\": \"axe atacks\"}'
 
 {"id":9,"login":"13hto","password":"axe atacks"}
+
 ```
 
 login usera
 
 ```
-curl.exe -X POST "http://localhost:3000/api/v1/auth/login" ` -H "Content-Type: application/json" ` -d '{\"login\": \"13hto\", \"password\": \"axe atacks\"}'
+
+curl.exe -X POST "http://localhost:3000/api/v1/auth/login" `-H "Content-Type: application/json"` -d '{\"login\": \"13hto\", \"password\": \"axe atacks\"}'
 
 {"id":15,"access_token":"140","user":{"id":9,"login":"13hto","password":"axe atacks"}}
+
 ```
 
 check profile
 
 ```
-curl.exe -X GET "http://localhost:3000/api/v1/users/profile/9" `
- -H "Content-Type: application/json" `
- -d '{\"access_token\":\"140\"}'
+
+curl.exe -X GET "http://localhost:3000/api/v1/users/profile/9" ` -H "Content-Type: application/json"`
+-d '{\"access_token\":\"140\"}'
 
 {"id":9,"login":"13hto","password":"axe atacks"}
+
 ```
 
 patch usera login
 
 ```
+
 curl.exe -X PATCH "http://localhost:3000/api/v1/users/profile/9" -H "Content-Type: application/json" ` -d '{\"login\": \"9hto\", \"password\": \"axe atacks\", \"access_token\":\"140\"}'
 
 {"id":9,"login":"9hto","password":"axe atacks"}
+
 ```
 
 udalyaem usera
 
 ```
+
 curl.exe -X DELETE "http://localhost:3000/api/v1/users/profile/9"
 -H "Content-Type: application/json" `
 -d '{\"access_token\":\"140\"}'
+
 ```
 
 ---
@@ -60,7 +98,7 @@ zadachi \
 
 AUTH
 
-````
+```
 
 curl.exe -X POST "http://localhost:3000/api/v1/auth/register" ` -H "Content-Type: application/json"`
 -d '{\"login\": \"hto\", \"password\": \"axe atacks\"}'
