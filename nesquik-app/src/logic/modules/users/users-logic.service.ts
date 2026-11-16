@@ -30,7 +30,7 @@ export class UsersLogicService {
     }
 
     const verifiedUser = await this.authRepository.findOneBy({
-      user: { id },
+      user_id: user.id,
       access_token,
     });
     if (!verifiedUser) {
@@ -55,7 +55,7 @@ export class UsersLogicService {
     }
 
     const verifiedUser = await this.authRepository.findOneBy({
-      user: { id },
+      user_id: user.id,
       access_token,
     });
     if (!verifiedUser) {
@@ -76,7 +76,7 @@ export class UsersLogicService {
     }
 
     const verifiedUser = await this.authRepository.findOneBy({
-      user: { id },
+      user_id: user.id,
       access_token,
     });
     if (!verifiedUser) {
@@ -84,6 +84,5 @@ export class UsersLogicService {
     }
 
     await this.usersRepository.delete({ id });
-
   }
 }

@@ -1,6 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import type { Relation } from 'typeorm';
-import { Auth } from '../../auth/entities/auth.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -12,7 +10,4 @@ export class User {
 
   @Column()
   password: string;
-
-  @OneToMany(() => Auth, (auth) => auth.user)
-  auth: Relation<Auth[]>;
 }

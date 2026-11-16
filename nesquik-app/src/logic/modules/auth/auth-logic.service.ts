@@ -37,7 +37,7 @@ export class AuthLogicService {
     }
 
     const auth = this.authRepository.create({
-      user,
+      user_id: user.id,
       access_token: String(Math.floor(Math.random() * 500)),
     });
     return this.authRepository.save(auth);

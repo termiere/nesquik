@@ -1,7 +1,9 @@
 import { execFileSync } from 'child_process';
 import { resolve } from 'path';
 
-const migrationName = process.env.npm_config_name;
+const migrationName =
+  process.env.npm_config_name ??
+  process.argv.find((arg) => arg.startsWith('--name='))?.split('=')[1];
 
 if (!migrationName) {
   console.error(
