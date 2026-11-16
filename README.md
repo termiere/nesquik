@@ -6,6 +6,8 @@
 
 #### запуск
 
+---
+
 `cd nesquik-app` \
 берем енв \
 `npm ci` - скачиваем зависимоости \
@@ -13,13 +15,10 @@
 `npm run migration:run` - применяем миграции \
 `npm run start:dev` - запускаем \
 
-если уже все настроенно
-
-```
-cd nesquik-app
-docker compose up -d postgres
-npm run start:dev
-```
+если уже все настроенно \
+`cd nesquik-app` \
+`docker compose up -d postgres` \
+`npm run start:dev` 
 
 ---
 
@@ -27,7 +26,7 @@ npm run start:dev
 
 > **token nuzhno zapomnit**
 
-````
+```
 
 http://localhost:3000/api/v1/users/
 
@@ -296,5 +295,7 @@ http://localhost:3000/users/all
 ```
 
 vse.
+
 ```
-````
+
+```
