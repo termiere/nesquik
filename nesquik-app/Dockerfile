@@ -1,10 +1,15 @@
-FROM node:18-alpine
+FROM node:24-alpine 
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
+RUN npm ci
 
-RUN npm install
+COPY src ./src
+COPY tsconfig.json ./
+COPY tsconfig.build.json ./
+COPY nest-cli.json ./
+
 RUN npm run build
 
 EXPOSE 3000

@@ -1,5 +1,11 @@
 # nesquik-app ( nestjs app )
 
+### 6 pfavkki
+
+typeorm in logic idk \
+add dto \
+exceptions
+
 ### 5 Migrations
 
 > **из 4 берем запросы, а тут у нас запуск**
@@ -18,7 +24,7 @@
 если уже все настроенно \
 `cd nesquik-app` \
 `docker compose up -d postgres` \
-`npm run start:dev` 
+`npm run start:dev`
 
 ---
 
@@ -295,7 +301,3 @@ http://localhost:3000/users/all
 ```
 
 vse.
-
-```
-
-```

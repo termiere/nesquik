@@ -1,13 +1,16 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
 } from '@nestjs/common';
 import { UsersLogicService } from '../../../../logic/modules/users/users-logic.service.js';
+import { UpdateUserDto } from '../dto/users.dto.js';
 
 @Controller('api/v1/users')
 export class UsersHttpController {
@@ -15,31 +18,23 @@ export class UsersHttpController {
 
   @Get()
   async getAllUsers() {
-    return await this.usersService.getAllUsers();
+    return this.usersService.getAllUsers();
   }
 
   @Get('/profile/:id')
   async getUser(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() body: { access_token: string },
   ) {
-    if (!body || !body.access_token) {
-      throw new BadRequestException('body / access_token de tvoi?');
-    }
-    return await this.usersService.getUser(id, body.access_token);
+    return this.usersService.getUser(id, body.access_token);
   }
 
   @Patch('/profile/:id')
   async updateUser(
-    @Param('id') id: number,
-    @Body() body: { access_token: string; login: string; password: string },
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateUserDto,
   ) {
-    if (!body || !body.access_token || !body.login || !body.password) {
-      throw new BadRequestException(
-        'body / access_token / login / password de tvoi?',
-      );
-    }
-    return await this.usersService.updateUser(
+    return this.usersService.updateUser(
       id,
       body.login,
       body.password,
@@ -48,18 +43,11 @@ export class UsersHttpController {
   }
 
   @Delete('/profile/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async deleteUser(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() body: { access_token: string },
   ) {
-    console.log('sha proverim');
-
-    if (!body || !body.access_token) {
-      throw new BadRequestException(
-        'body / access_token / login / password de tvoi?',
-      );
-    }
-    console.log('sha proverim');
-    return await this.usersService.deleteUser(id, body.access_token);
+    return this.usersService.deleteUser(id, body.access_token);
   }
 }

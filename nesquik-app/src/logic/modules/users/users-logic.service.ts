@@ -1,37 +1,40 @@
-import { Injectable } from '@nestjs/common';
-import { UsersDataRepository } from '../../../data/modules/users/users-data.repository.js';
-import { AuthDataRepository } from '../../../data/modules/auth/auth-data.repository.js';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { User } from '../../../data/modules/users/entities/user.entity.js';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Auth } from '../../../data/modules/auth/entities/auth.entity.js';
 
 @Injectable()
 export class UsersLogicService {
   constructor(
-    private readonly usersRepository: UsersDataRepository,
-    private readonly authRepository: AuthDataRepository,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
+    @InjectRepository(Auth) private readonly authRepository: Repository<Auth>,
   ) {}
 
-  sayHello(): string {
-    return 'Hello every!';
-  }
-
   async getAllUsers() {
-    return this.usersRepository.getAllUsers();
+    return this.usersRepository.find();
   }
 
   async getUser(id: number, access_token: string) {
-    const user = await this.usersRepository.getUserById(id);
+    const user = await this.usersRepository.findOneBy({ id });
     if (!user) {
-      return 'nu net takogo usera';
+      throw new NotFoundException('User not found');
+    }
+    if (!access_token) {
+      throw new UnauthorizedException('Unauthorized');
     }
 
-    if (!access_token) {
-      return 'nu ti nichego ne zabil? login nada';
-    }
-    const verifiedUser = await this.authRepository.getUserByAccessToken(
-      user.id,
+    const verifiedUser = await this.authRepository.findOneBy({
+      user: { id },
       access_token,
-    );
+    });
     if (!verifiedUser) {
-      return 'ti zhe lzhesh chertila';
+      throw new ForbiddenException('Access denied');
     }
 
     return user;
@@ -43,38 +46,44 @@ export class UsersLogicService {
     password: string,
     access_token: string,
   ) {
-    const user = await this.usersRepository.getUserById(id);
+    const user = await this.usersRepository.findOneBy({ id });
     if (!user) {
-      return 'a polzovatelya to nema';
+      throw new NotFoundException('User not found');
+    }
+    if (!access_token) {
+      throw new UnauthorizedException('Unauthorized');
     }
 
-    const verifiedUser = await this.authRepository.getUserByAccessToken(
-      user.id,
+    const verifiedUser = await this.authRepository.findOneBy({
+      user: { id },
       access_token,
-    );
+    });
     if (!verifiedUser) {
-      return 'ti zhe lzhesh chertila';
+      throw new ForbiddenException('Access denied');
     }
 
-    await this.usersRepository.updateUser(id, login, password);
-    return this.usersRepository.getUserById(id);
+    await this.usersRepository.update({ id }, { login, password });
+    return this.usersRepository.findOneBy({ id });
   }
 
   async deleteUser(id: number, access_token: string) {
-    const user = await this.usersRepository.getUserById(id);
+    const user = await this.usersRepository.findOneBy({ id });
     if (!user) {
-      return 'a polzovatelya to nema';
+      throw new NotFoundException('User not found');
+    }
+    if (!access_token) {
+      throw new UnauthorizedException('Unauthorized');
     }
 
-    const verifiedUser = await this.authRepository.getUserByAccessToken(
-      user.id,
+    const verifiedUser = await this.authRepository.findOneBy({
+      user: { id },
       access_token,
-    );
+    });
     if (!verifiedUser) {
-      return 'ti zhe lzhesh chertila';
+      throw new ForbiddenException('Access denied');
     }
 
-    await this.usersRepository.deleteUser(id);
-    return 'vse usera nema';
+    await this.usersRepository.delete({ id });
+
   }
 }

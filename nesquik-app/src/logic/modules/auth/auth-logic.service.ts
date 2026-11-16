@@ -1,30 +1,45 @@
-import { Injectable } from '@nestjs/common';
-import { AuthDataRepository } from '../../../data/modules/auth/auth-data.repository.js';
-import { UsersDataRepository } from '../../../data/modules/users/users-data.repository.js';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../../../data/modules/users/entities/user.entity.js';
+import { Auth } from '../../../data/modules/auth/entities/auth.entity.js';
 
 @Injectable()
 export class AuthLogicService {
   constructor(
-    private readonly authRepository: AuthDataRepository,
-    private readonly usersRepository: UsersDataRepository,
+    @InjectRepository(Auth) private readonly authRepository: Repository<Auth>,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
 
   async register(login: string, password: string) {
-    const user = await this.usersRepository.getUserByLogin(login);
-    if (user) {
-      return 'user to uzhe est';
+    const userExists = await this.usersRepository.findOneBy({
+      login,
+    });
+    if (userExists) {
+      throw new ConflictException('The user already exists');
     }
-    return await this.authRepository.register(login, password);
+
+    const user = this.usersRepository.create({
+      login,
+      password,
+    });
+    return this.usersRepository.save(user);
   }
 
   async login(login: string, password: string) {
-    const user = await this.usersRepository.getUserByLoginAndPassword(
-      login,
-      password,
-    );
+    const user = await this.usersRepository.findOneBy({ login, password });
     if (!user) {
-      return 'ne pravelnii parol or login';
+      throw new UnauthorizedException('Invalid login or password');
     }
-    return await this.authRepository.login(user);
+
+    const auth = this.authRepository.create({
+      user,
+      access_token: String(Math.floor(Math.random() * 500)),
+    });
+    return this.authRepository.save(auth);
   }
 }
