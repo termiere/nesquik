@@ -44,7 +44,7 @@ curl.exe -X POST "http://localhost:3000/api/v1/auth/login" `
 {"access_token":"433"}
 ```
 
-CHECK USER PROFILE 
+CHECK USER PROFILE
 
 ```
 curl.exe -X GET "http://localhost:3000/api/v1/users/profile/2" `
@@ -68,5 +68,43 @@ DELETE USER
 
 ```
 curl.exe -X DELETE "http://localhost:3000/api/v1/users/profile/2" `
+    -H "X-User-Access-Key: 433"
+```
+
+ALL USERS DATA
+
+```
+curl.exe -X GET "http://localhost:3000/api/v1/data/all" `
+```
+
+CREATE USER:ID DATA
+
+```
+curl.exe -X POST "http://localhost:3000/api/v1/data/all" `
+    -H "Content-Type: application/json" `
+    -H "X-User-Access-Key: 433" `
+    -d '{\"data\": \"ADOTA2KOGDA\"}'
+```
+
+CHECK USER:ID DATA
+
+```
+curl.exe -X GET "http://localhost:3000/api/v1/data/1" `
+    -H "X-User-Access-Key: 433"
+```
+
+UPDATE USER:ID DATA
+
+```
+curl.exe -X PATCH "http://localhost:3000/api/v1/data/1" `
+    -H "Content-Type: application/json" `
+    -H "X-User-Access-Key: 433" `
+    -d '{\"data\": \"2hto\"}'
+```
+
+DELETE USER:ID DATA
+
+```
+curl.exe -X DELETE "http://localhost:3000/api/v1/data/1" `
     -H "X-User-Access-Key: 433"
 ```
