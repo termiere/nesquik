@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Headers,
   Patch,
 } from '@nestjs/common';
 import { UsersLogicService } from '../../../../logic/modules/users/users-logic.service.js';
@@ -24,21 +25,22 @@ export class UsersHttpController {
   @Get('/profile/:id')
   async getUser(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: { access_token: string },
+    @Headers('x-user-access-key') accessKey: string,
   ) {
-    return this.usersService.getUser(id, body.access_token);
+    return this.usersService.getUser(id, accessKey);
   }
 
   @Patch('/profile/:id')
   async updateUser(
     @Param('id', ParseIntPipe) id: number,
+    @Headers('x-user-access-key') accessKey: string,
     @Body() body: UpdateUserDto,
   ) {
     return this.usersService.updateUser(
       id,
       body.login,
       body.password,
-      body.access_token,
+      accessKey,
     );
   }
 
@@ -46,8 +48,8 @@ export class UsersHttpController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteUser(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: { access_token: string },
+    @Headers('x-user-access-key') accessKey: string,
   ) {
-    return this.usersService.deleteUser(id, body.access_token);
+    return this.usersService.deleteUser(id, accessKey);
   }
 }

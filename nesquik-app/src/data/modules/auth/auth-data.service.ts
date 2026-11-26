@@ -21,6 +21,7 @@ export class AuthDataService {
       user_id: id,
       access_token: String(Math.floor(Math.random() * 500)),
     });
-    return this.repository.save(auth);
+    await this.repository.save(auth);
+    return { access_token: auth.access_token };
   }
 }

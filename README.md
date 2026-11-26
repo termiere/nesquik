@@ -25,41 +25,48 @@ http://localhost:3000/api/v1/users/
 CREATE USER
 
 ```
-curl.exe -X POST "http://localhost:3000/api/v1/auth/register" `-H "Content-Type: application/json"` -d '{\"login\": \"13hto\", \"password\": \"axe atacks\"}'
+curl.exe -X POST "http://localhost:3000/api/v1/auth/register" `
+    -H "Content-Type: application/json"`
+    -d '{\"login\": \"13hto\", \"password\": \"axe atacks\"}'
 
-{"id":9,"login":"13hto","password":"axe atacks"}
+{"id":2,"login":"2hto","password":"axe atacks"}
 ```
 
 LOGIN USER
+
 > ! НУЖНО ЗАПОМНИТЬ ТОКЕН
 
 ```
-curl.exe -X POST "http://localhost:3000/api/v1/auth/login" `-H "Content-Type: application/json"` -d '{\"login\": \"13hto\", \"password\": \"axe atacks\"}'
+curl.exe -X POST "http://localhost:3000/api/v1/auth/login" `
+    -H "Content-Type: application/json"`
+    -d '{\"login\": \"2hto\", \"password\": \"axe atacks\"}'
 
-{"id":15,"access_token":"140","user":{"id":9,"login":"13hto","password":"axe atacks"}}
+{"access_token":"433"}
 ```
 
 CHECK USER PROFILE 
 
 ```
-curl.exe -X GET "http://localhost:3000/api/v1/users/profile/9" ` -H "Content-Type: application/json"`
--d '{\"access_token\":\"140\"}'
+curl.exe -X GET "http://localhost:3000/api/v1/users/profile/2" `
+    -H "X-User-Access-Key: 433"
 
-{"id":9,"login":"13hto","password":"axe atacks"}
+{"id":2,"login":"2hto","password":"axe atacks"}
 ```
 
 PATCH PROFILE
 
 ```
-curl.exe -X PATCH "http://localhost:3000/api/v1/users/profile/9" -H "Content-Type: application/json" ` -d '{\"login\": \"9hto\", \"password\": \"axe atacks\", \"access_token\":\"140\"}'
+curl.exe -X PATCH "http://localhost:3000/api/v1/users/profile/2" `
+    -H "Content-Type: application/json" `
+    -H "X-User-Access-Key: 433" `
+    -d '{\"login\": \"2hto\", \"password\": \"axe atacks\"}'
 
-{"id":9,"login":"9hto","password":"axe atacks"}
+{"id":2,"login":"2hto","password":"2axe atacks"}
 ```
 
 DELETE USER
 
 ```
-curl.exe -X DELETE "http://localhost:3000/api/v1/users/profile/9"
--H "Content-Type: application/json" `
--d '{\"access_token\":\"140\"}'
+curl.exe -X DELETE "http://localhost:3000/api/v1/users/profile/2" `
+    -H "X-User-Access-Key: 433"
 ```
