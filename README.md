@@ -47,8 +47,8 @@ curl.exe -X POST "http://localhost:3000/api/v1/auth/login" `
 CHECK USER PROFILE
 
 ```
-curl.exe -X GET "http://localhost:3000/api/v1/users/profile/2" `
-    -H "X-User-Access-Key: 433"
+curl.exe -X GET "http://localhost:3000/api/v1/users/profile/2"`
+    -H "X-User-Access-Key: 433"`
 
 {"id":2,"login":"2hto","password":"axe atacks"}
 ```
@@ -107,4 +107,24 @@ DELETE USER:ID DATA
 ```
 curl.exe -X DELETE "http://localhost:3000/api/v1/data/1" `
     -H "X-User-Access-Key: 433"
+```
+
+BLOCK USER:ID
+
+```
+curl.exe -X POST "http://localhost:3000/api/v1/users/3/ban" `
+    -H "Content-Type: application/json" `
+    -H "X-User-Access-Key: 433"
+
+{"id":3,"login":"3hto","password":"axe atacks","isBanned":true}
+```
+
+UNBLOCK USER:ID
+
+```
+curl.exe -X POST "http://localhost:3000/api/v1/users/3/unban" `
+    -H "Content-Type: application/json" `
+    -H "X-User-Access-Key: 433"
+
+{"id":3,"login":"3hto","password":"axe atacks","isBanned":false}
 ```

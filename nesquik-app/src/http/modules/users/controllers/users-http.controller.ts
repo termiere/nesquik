@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Headers,
   Patch,
+  Post,
 } from '@nestjs/common';
 import { UsersLogicService } from '../../../../logic/modules/users/users-logic.service.js';
 import { UpdateUserDto } from '../dto/users.dto.js';
@@ -51,5 +52,21 @@ export class UsersHttpController {
     @Headers('x-user-access-key') accessKey: string,
   ) {
     return this.usersService.deleteUser(id, accessKey);
+  }
+
+  @Post('/:id/ban')
+  async blockUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Headers('x-user-access-key') accessKey: string,
+  ) {
+    return this.usersService.blockUser(id, accessKey);
+  }
+
+  @Post('/:id/unban')
+  async unblockUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Headers('x-user-access-key') accessKey: string,
+  ) {
+    return this.usersService.unblockUser(id, accessKey);
   }
 }

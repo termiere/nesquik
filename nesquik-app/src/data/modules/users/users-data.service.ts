@@ -37,4 +37,12 @@ export class UsersDataService {
   async delete(id: number) {
     return this.repository.delete({ id });
   }
+
+  async block(id: number) {
+    return this.repository.update({ id }, { isBanned: true });
+  }
+
+  async unblock(id: number) {
+    return this.repository.update({ id }, { isBanned: false });
+  }
 }

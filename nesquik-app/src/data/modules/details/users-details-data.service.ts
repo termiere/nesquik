@@ -13,7 +13,7 @@ export class UserDetailsDataService {
     return this.repository.find();
   }
 
-  async findDetailsById(userId: number) {
+  async findDetailsByUserId(userId: number) {
     return this.repository.findOneBy({ user_id: userId });
   }
 

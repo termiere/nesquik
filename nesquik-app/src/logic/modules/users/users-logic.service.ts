@@ -14,27 +14,35 @@ export class UsersLogicService {
     private readonly authDataService: AuthDataService,
   ) {}
 
-  async getAllUsers() {
-    return this.usersDataService.getAllUsers();
-  }
-
-  async getUser(id: number, access_token: string) {
+  async verifyUser(id: number, accessKey: string) {
     const user = await this.usersDataService.findUserById(id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    if (!access_token) {
+    if (!accessKey) {
       throw new UnauthorizedException('Unauthorized');
     }
 
-    const verifiedUser = this.authDataService.findUserByIdAndToken(
+    const verifiedUser = await this.authDataService.findUserByIdAndToken(
       id,
-      access_token,
+      accessKey,
     );
     if (!verifiedUser) {
-      throw new ForbiddenException('Access denied');
+      throw new UnauthorizedException('Access denied');
     }
 
+    return user;
+  }
+
+  async getAllUsers() {
+    return this.usersDataService.getAllUsers();
+  }
+
+  async getUser(id: number, accessKey: string) {
+    const user = await this.verifyUser(id, accessKey);
+    if (user.isBanned) {
+      throw new ForbiddenException('User is banned');
+    }
     return user;
   }
 
@@ -42,45 +50,49 @@ export class UsersLogicService {
     id: number,
     login: string,
     password: string,
-    access_token: string,
+    accessKey: string,
   ) {
-    const user = await this.usersDataService.findUserById(id);
-    if (!user) {
-      throw new NotFoundException('User not found');
+    const user = await this.verifyUser(id, accessKey);
+    if (user.isBanned) {
+      throw new ForbiddenException('User is banned');
     }
-    if (!access_token) {
-      throw new UnauthorizedException('Unauthorized');
-    }
-
-    const verifiedUser = this.authDataService.findUserByIdAndToken(
-      id,
-      access_token,
-    );
-    if (!verifiedUser) {
-      throw new ForbiddenException('Access denied');
-    }
-
     await this.usersDataService.update(id, login, password);
     return this.usersDataService.findUserById(id);
   }
 
-  async deleteUser(id: number, access_token: string) {
-    const user = await this.usersDataService.findUserById(id);
-    if (!user) {
+  async deleteUser(id: number, accessKey: string) {
+    const user = await this.verifyUser(id, accessKey);
+    if (user.isBanned) {
+      throw new ForbiddenException('User is banned');
+    }
+    await this.usersDataService.delete(id);
+  }
+
+  async blockUser(id: number, accessKey: string) {
+    const user = await this.verifyUser(id, accessKey);
+    if (user.isBanned) {
+      throw new ForbiddenException('User is banned');
+    }
+
+    const res = await this.usersDataService.block(id);
+    if (!res.affected) {
       throw new NotFoundException('User not found');
     }
-    if (!access_token) {
-      throw new UnauthorizedException('Unauthorized');
+
+    return this.usersDataService.findUserById(id);
+  }
+
+  async unblockUser(id: number, accessKey: string) {
+    const user = await this.verifyUser(id, accessKey);
+    if (!user.isBanned) {
+      throw new ForbiddenException('User is not banned');
     }
 
-    const verifiedUser = this.authDataService.findUserByIdAndToken(
-      id,
-      access_token,
-    );
-    if (!verifiedUser) {
-      throw new ForbiddenException('Access denied');
+    const res = await this.usersDataService.unblock(id);
+    if (!res.affected) {
+      throw new NotFoundException('User not found');
     }
 
-    await this.usersDataService.delete(id);
+    return this.usersDataService.findUserById(id);
   }
 }
